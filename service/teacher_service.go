@@ -6,17 +6,20 @@ import (
 	"github.com/FLAME-God/lms/models"
 )
 
-func CreateTeacher(req dto.TeacherSignupRequest, UserID uint) (*models.TeacherModel, error) {
+func CreateTeacher(req dto.TeacherSignupRequest, UserID uint, avatarUrl string, avatarPublicID string) (*models.TeacherModel, error) {
 	// create a new teacher model
 	teacher := &models.TeacherModel{
-		Expertise:     req.Expertise,
-		Experience:    req.Experience,
-		UserID:        UserID,
-		Qualification: req.Qualification,
-		AccountNumber: req.AccountNumber,
-		BankName:      req.BankName,
-		IfscCode:      req.IfscCode,
-		BranchName:    req.BranchName,
+		Expertise:      req.Expertise,
+		Experience:     req.Experience,
+		UserID:         UserID,
+		Qualification:  req.Qualification,
+		AccountNumber:  req.AccountNumber,
+		BankName:       req.BankName,
+		IfscCode:       req.IfscCode,
+		BranchName:     req.BranchName,
+		Avatar:         avatarUrl,
+		AvatarPublicID: avatarPublicID,
+		About:          req.About,
 	}
 
 	// save the teacher model to the database

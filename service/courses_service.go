@@ -6,7 +6,7 @@ import (
 	"github.com/FLAME-God/lms/models"
 )
 
-func CreateCourse(req dto.CourseRequest, UserID uint) (*models.CourseModel, error) {
+func CreateCourse(req dto.CourseRequest, UserID uint, imageUrl string, imagePublicID string) (*models.CourseModel, error) {
 	// check if the user is a teacher
 	var teacher models.TeacherModel
 	if err := config.DB.Where("user_id = ?", UserID).First(&teacher).Error; err != nil {
@@ -14,13 +14,15 @@ func CreateCourse(req dto.CourseRequest, UserID uint) (*models.CourseModel, erro
 	}
 	// create new course
 	course := &models.CourseModel{
-		CourseName:  req.CourseName,
-		Category:    req.Category,
-		Description: req.Description,
-		Duration:    req.Duration,
-		Syllabus:    req.Syllabus,
-		Price:       req.Price,
-		TeacherID:   teacher.ID,
+		CourseName:    req.CourseName,
+		Category:      req.Category,
+		Description:   req.Description,
+		Duration:      req.Duration,
+		Syllabus:      req.Syllabus,
+		Price:         req.Price,
+		TeacherID:     teacher.ID,
+		Image:         imageUrl,
+		ImagePublicID: imagePublicID,
 	}
 	// save the course model to the database
 	if err := config.DB.Create(course).Error; err != nil {

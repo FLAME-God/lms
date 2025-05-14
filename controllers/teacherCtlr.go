@@ -10,8 +10,19 @@ import (
 
 func TeacherSignup(c *gin.Context) {
 	var body dto.TeacherSignupRequest
-	if err := c.ShouldBindJSON(&body); err != nil {
+	if err := c.ShouldBind(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	avatarUrl, exists := c.Get("url")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get avatar URL"})
+		return
+	}
+	avatarPublicID, exists := c.Get("public_id")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get avatar public ID"})
 		return
 	}
 
@@ -43,7 +54,8 @@ func TeacherSignup(c *gin.Context) {
 		IfscCode:      body.IfscCode,
 		BranchName:    body.BranchName,
 	}
-	createdTeacher, err := service.CreateTeacher(*teacher, user.ID)
+
+	createdTeacher, err := service.CreateTeacher(*teacher, user.ID, avatarUrl.(string), avatarPublicID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false,
 			"message": "Failed to create teacher",
