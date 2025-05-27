@@ -7,7 +7,7 @@ import TeacherCard from '../components/shared/TeacherCard';
 const AllTeachers = () => {
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const teachersPerPage = 6;
+  const teachersPerPage = 10;
 
   // Extract unique specializations
   const specializations = [...new Set(instructors.map(t => t.specialization))];
